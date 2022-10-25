@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,5 +36,11 @@ public class TutorialController {
         tutorial.setStatus(Status.PUBLISHED);
         tutorial = tutorialService.update(tutorial);
         return new ResponseEntity<>(tutorial, HttpStatus.OK);
+    }
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<Tutorial>> getByTitle(@PathVariable String title) {
+        List<Tutorial> tutorialList = tutorialService.getByTitle(title);
+        return new ResponseEntity<>(tutorialList, HttpStatus.OK);
     }
 }
