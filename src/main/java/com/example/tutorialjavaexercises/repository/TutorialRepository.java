@@ -1,5 +1,6 @@
 package com.example.tutorialjavaexercises.repository;
 
+import com.example.tutorialjavaexercises.model.Status;
 import com.example.tutorialjavaexercises.model.Tutorial;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,4 +11,5 @@ import java.util.List;
 public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
 
     List<Tutorial> findByTitleContaining(String title);
+    List<Tutorial> findByStatus(Status status);
 }

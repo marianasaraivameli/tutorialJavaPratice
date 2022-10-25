@@ -43,4 +43,10 @@ public class TutorialController {
         List<Tutorial> tutorialList = tutorialService.getByTitle(title);
         return new ResponseEntity<>(tutorialList, HttpStatus.OK);
     }
+
+    @GetMapping("/published")
+    public ResponseEntity<List<Tutorial>> getPublished() {
+        List<Tutorial> tutorialList = tutorialService.getPublished();
+        return new ResponseEntity<>(tutorialList, HttpStatus.OK);
+    }
 }
