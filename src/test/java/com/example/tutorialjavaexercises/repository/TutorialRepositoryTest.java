@@ -77,4 +77,11 @@ public class TutorialRepositoryTest {
 
         assertThat(tutorialList.size()).isEqualTo(0);
     }
+
+    @Test
+    public void findByStatus_returnListTutorial_whenStatusDiferent() {
+        List<Tutorial> tutorialList = repository.findByStatus(Status.PUBLISHED);
+
+        assertThat(tutorialList.size()).isEqualTo(0);
+    }
 }
