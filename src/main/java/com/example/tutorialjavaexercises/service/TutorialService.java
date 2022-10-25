@@ -1,6 +1,7 @@
 package com.example.tutorialjavaexercises.service;
 
 import com.example.tutorialjavaexercises.exception.InvalidParamException;
+import com.example.tutorialjavaexercises.model.Status;
 import com.example.tutorialjavaexercises.model.Tutorial;
 import com.example.tutorialjavaexercises.repository.TutorialRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,8 @@ public class TutorialService implements ITutorialService{
         if (tutorial.getId() != null) {
             throw new InvalidParamException("O Tutorial não pode ter ID!");
         }
-
+        // setando um status para o tutorial iniciar em Draft
+        tutorial.setStatus(Status.DRAFT);
         return repository.save(tutorial);
     }
 
