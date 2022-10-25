@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,13 +35,19 @@ public class TutorialService implements ITutorialService{
     }
 
     @Override
-    public Tutorial getById(Long id) {
-        return null;
+    public Optional<Tutorial> getById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
     public Tutorial update(Tutorial tutorial) {
-        return null;
+        if(tutorial == null) {
+            throw new InvalidParamException("Parâmetro não pode ser nulo!");
+        }
+        if (tutorial.getId() == null) {
+            throw new InvalidParamException("O Tutorial deve ter um ID!");
+        }
+        return repository.save(tutorial);
     }
 
     @Override
