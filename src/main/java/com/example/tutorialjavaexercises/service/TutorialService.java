@@ -67,6 +67,6 @@ public class TutorialService implements ITutorialService{
 
     @Override
     public List<Tutorial> getByTitle(String title) {
-        return null;
+        return repository.findByTitleContaining(title);
     }
 }
