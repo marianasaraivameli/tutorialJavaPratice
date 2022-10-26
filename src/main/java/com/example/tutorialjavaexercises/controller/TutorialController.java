@@ -19,7 +19,6 @@ public class TutorialController {
     private ITutorialService tutorialService;
 
 
-    // TODO: tratar exception de title null
     @PostMapping
     public ResponseEntity<Tutorial> insertTutorial(@RequestBody Tutorial tutorial) {
        Tutorial newTutorial = tutorialService.insertTutorial(tutorial);
