@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,7 +62,14 @@ class TutorialServiceTest {
     }
 
     @Test
-    void getById() {
+    void getById_returnTutorialById_whenTutorialExist() {
+        BDDMockito.when(repository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Optional.of(new Tutorial(3L, "Title 3", "Example description", Status.DRAFT)));
+
+        Optional<Tutorial> tutorial = service.getById(3L);
+
+        assertThat(tutorial).isPresent();
+        assertThat(tutorial.get().getId()).isEqualTo(3L);
     }
 
     @Test
