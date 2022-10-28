@@ -31,7 +31,7 @@ public class TutorialService implements ITutorialService{
 
     @Override
     public List<Tutorial> getAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
@@ -52,12 +52,15 @@ public class TutorialService implements ITutorialService{
 
     @Override
     public void deleteAll() {
-
+        repository.deleteAll();
     }
 
     @Override
     public void deleteById(Long id) {
-
+        if(id == null) {
+            throw new InvalidParamException("Parâmetro não pode ser nulo!");
+        }
+        repository.deleteById(id);
     }
 
     @Override

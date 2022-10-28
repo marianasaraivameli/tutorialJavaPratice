@@ -49,4 +49,21 @@ public class TutorialController {
         List<Tutorial> tutorialList = tutorialService.getPublished();
         return new ResponseEntity<>(tutorialList, HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity<List<Tutorial>> getAll() {
+        return new ResponseEntity<>(tutorialService.getAll(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteAll() {
+        tutorialService.deleteAll();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        tutorialService.getById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
