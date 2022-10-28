@@ -120,4 +120,24 @@ public class TutorialRepositoryTest {
 
         assertThat(tutorialList.size()).isEqualTo(0);
     }
+
+    @Test
+    public void findByTitleContaining_returnTutorialFind_whenTitleExistInList() {
+        Tutorial newTutorial = new Tutorial(null, "Title 1", "Example description", Status.DRAFT);
+        repository.save(newTutorial);
+
+        List<Tutorial> tutorialList = repository.findByTitleContaining(newTutorial.getTitle());
+
+        assertThat(tutorialList.size()).isEqualTo(1);
+        assertThat(newTutorial.getTitle()).isEqualTo(tutorialList.get(0).getTitle());
+    }
+    @Test
+    public void findByTitleContaining_returnTutorialFind_whenTitleNotExist() {
+        Tutorial newTutorial = new Tutorial(null, "Title 1", "Example description", Status.DRAFT);
+        repository.save(newTutorial);
+
+        List<Tutorial> tutorialList = repository.findByTitleContaining("Not Exist");
+
+        assertThat(tutorialList.size()).isEqualTo(0);
+    }
 }
