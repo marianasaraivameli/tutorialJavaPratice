@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -84,4 +85,23 @@ public class TutorialRepositoryTest {
 
         assertThat(tutorialList.size()).isEqualTo(0);
     }
+
+
+    @Test
+    public void deleteAll_returnListEmpty_whenDeleteAll(){
+        repository.deleteAll();
+        assertThat(repository.count()).isEqualTo(0);
+    }
+
+    @Test
+    public void deleteById_returnListNotId_whenDeleteByItem(){
+        Tutorial newTutorial = new Tutorial(1L, "Title 1", "Example description", Status.DRAFT);
+        Tutorial tutorialSaved = repository.save(newTutorial);
+
+        repository.deleteById(tutorialSaved.getId());
+
+        assertThat(repository.count()).isEqualTo(0);
+    }
+
+
 }
