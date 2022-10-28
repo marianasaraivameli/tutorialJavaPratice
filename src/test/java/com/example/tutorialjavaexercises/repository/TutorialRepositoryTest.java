@@ -103,5 +103,21 @@ public class TutorialRepositoryTest {
         assertThat(repository.count()).isEqualTo(0);
     }
 
+    @Test
+    public void findAll_returnListTutorial_whenListTutorialExist() {
+        Tutorial newTutorial = new Tutorial(null, "Title 1", "Example description", Status.DRAFT);
+        repository.save(newTutorial);
 
+        List<Tutorial> tutorialList = repository.findAll();
+
+        assertThat(tutorialList.size()).isEqualTo(1);
+        assertThat(newTutorial.getId()).isEqualTo(tutorialList.get(0).getId());
+    }
+
+    @Test
+    public void findAll_returnListTutorial_whenListTutorialNotExist() {
+        List<Tutorial> tutorialList = repository.findAll();
+
+        assertThat(tutorialList.size()).isEqualTo(0);
+    }
 }
