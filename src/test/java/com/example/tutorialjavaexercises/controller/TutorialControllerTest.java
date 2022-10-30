@@ -6,6 +6,7 @@ import com.example.tutorialjavaexercises.service.TutorialService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
@@ -16,8 +17,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,6 +40,15 @@ class TutorialControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    private List<Tutorial> tutorialListSetup = new ArrayList<>();
+    private Tutorial tutorialSetup;
+
+    @BeforeEach
+    public void setup() {
+        tutorialSetup = new Tutorial(1L, "Title", "Description", Status.DRAFT);
+        tutorialListSetup.add(tutorialSetup);
+    }
 
     @Test
     void insertTutorial_returnNewTutorial_whenTutorialIsValid() throws Exception {
@@ -55,12 +72,28 @@ class TutorialControllerTest {
     }
 
     @Test
-    void updateStatusPublished() {
+    void updateStatusPublished_returnUpdateTutorial_whenTutorialIsValid() throws Exception {
+
+        BDDMockito.when(service.getById(ArgumentMatchers.anyLong()))
+                .thenReturn(Optional.of(tutorialSetup));
+
+
+        BDDMockito.when(service.update(ArgumentMatchers.any(Tutorial.class)))
+                .thenReturn(tutorialSetup);
+
+        tutorialSetup.setStatus(Status.PUBLISHED);
+
+        ResultActions result = mockMvc.perform(
+                patch("/tutorial/{id}/published", tutorialSetup.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tutorialSetup))
+        );
+
+        result.andExpect(status().isOk())
+                .andExpect((jsonPath("$.title", CoreMatchers.is("Title"))));
+
     }
 
-    @Test
-    void getByTitle() {
-    }
 
     @Test
     void getPublished() {
