@@ -109,6 +109,16 @@ class TutorialControllerTest {
     }
 
     @Test
-    void getPublished() {
+    void getPublished_returnTutorialWithStatusPublished_whenSuccess() throws Exception {
+        BDDMockito.when(service.getPublished())
+                .thenReturn(Collections.singletonList(tutorialListSetup.get(0)));
+
+        ResultActions result = mockMvc.perform(
+                get("/tutorial/published")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].title", CoreMatchers.is(tutorialListSetup.get(0).getTitle())));
     }
 }
