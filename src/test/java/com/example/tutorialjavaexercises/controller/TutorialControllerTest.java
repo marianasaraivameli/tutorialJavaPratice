@@ -90,10 +90,23 @@ class TutorialControllerTest {
         );
 
         result.andExpect(status().isOk())
-                .andExpect((jsonPath("$.title", CoreMatchers.is("Title"))));
+                .andExpect(jsonPath("$.title", CoreMatchers.is("Title")));
 
     }
 
+    @Test
+    void getByTitle_returnTutorialByTitle_whenSuccess() throws Exception {
+        BDDMockito.when(service.getByTitle(ArgumentMatchers.anyString()))
+                .thenReturn(Collections.singletonList(tutorialListSetup.get(0)));
+
+        ResultActions result = mockMvc.perform(
+                get("/tutorial/title/{title}", tutorialSetup.getTitle())
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].title", CoreMatchers.is(tutorialListSetup.get(0).getTitle())));
+    }
 
     @Test
     void getPublished() {
