@@ -11,6 +11,8 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class TutorialServiceTest {
@@ -76,12 +81,27 @@ class TutorialServiceTest {
     void update() {
     }
 
+    // TODO verificar test
     @Test
-    void deleteAll() {
+    void deleteAll_returnDeleteAllTutorials_whenSuccess() {
+        TutorialRepository tutorial = mock(TutorialRepository.class);
+        doNothing().when(tutorial).deleteAll();
+
+        tutorial.deleteAll();
+
+        verify(tutorial, times(1)).deleteAll();
     }
 
+    // TODO verificar test
     @Test
-    void deleteById() {
+    void deleteById_returnDeleteByIdTutorial_whenSucess() {
+        TutorialRepository tutorial = mock(TutorialRepository.class);
+        doNothing().when(tutorial).deleteById(1L);
+
+        tutorial.deleteById(1L);
+
+//        assertThat(repository.count()).isEqualTo(0);
+        verify(tutorial, times(1)).deleteById(1L);
     }
 
     @Test
