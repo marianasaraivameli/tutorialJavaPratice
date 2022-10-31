@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,5 +120,34 @@ class TutorialControllerTest {
 
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].title", CoreMatchers.is(tutorialListSetup.get(0).getTitle())));
+    }
+
+    @Test
+    void getAll_returnAllTutorials_whenSuccess() throws Exception {
+        BDDMockito.when(service.getAll())
+                .thenReturn(Collections.singletonList(tutorialListSetup.get(0)));
+
+        ResultActions result = mockMvc.perform(
+                get("/tutorial")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].title", CoreMatchers.is(tutorialListSetup.get(0).getTitle())))
+                .andExpect(jsonPath("$.[0].description", CoreMatchers.is(tutorialListSetup.get(0).getDescription())));
+    }
+
+    @Test
+    void deleteAll_returnDeleteAllTutorialsInApp_whenSuccess() throws Exception {
+        TutorialService tutorial = mock(TutorialService.class);
+        doCallRealMethod().when(tutorial).deleteAll();
+
+        ResultActions result = mockMvc.perform(
+                delete("/tutorial/delete")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isNoContent());
+
     }
 }
